@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<html>
+<head>
+    <title>Ajax ile Veri ekleme</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+</head>
+<body>
+    @model string
+    <div>@DateTime.Now</div>
+    <input id="isim" type="text" />
+    <input id="Kaydet" type="button" value="Kaydet" />
+
+    <div id="dene">
+       
+         <!-- partial view  koymuştuk--> </div>
+
+    <br /> <br />
+    <input id="Listele" type="button" value="Listele" />
+    <div id="dene2"> 
+         @Html.Action("ShowList", "AjaxUse")<!-- partial view  koymuştuk--> </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Kaydet").click(function () {
+                var gelenisim = $("#isim").val(); // textbox a girilen isim alınıyor
+
+                $.ajax({
+                    url: '@Url.Action("KullaniciEkle", "AjaxUse")',
+                    type: 'get',
+                    data: { isim: gelenisim },
+                    success: function (data) {
+                        console.log(data);
+                      
+                        $("#dene").html(data);
+                    },
+                    error: function (err) {
+                        alert("bir hata oluştu");
+                    }
+                })
+                document.getElementById("isim").value = ""; // butona basıldıktan sonra inputun içi temizlenir
+            });
+
+        
+            $("#Listele").click(function () {
+              //  var gelenisim = $("#isim").val(); // textbox a girilen isim alınıyor
+
+                $.ajax({
+                    url: '@Url.Action("ShowList", "AjaxUse")',
+                    type: 'get',
+                    success: function (data) {
+
+                        $("#dene2").html(data);
+                        var div3Content = '';
+                       /* for (var i = 0; i < data.length; i++) {
+                            div3Content += '<p>' + data[i] + '</p>'; // 
+                        }
+                        $("#dene2").append(div3Content);
+                        */
+                        console.log(data);
+
+                       /* console.log(data);
+                        $("#dene2").html(data);*/
+                    },
+                    error: function (err) {
+                        alert("bir hata oluştu");
+                    }
+                })
+                   //document.getElementById("isim").value = ""; // butona basıldıktan sonra inputun içi temizlenir
+               });
+        });
+    </script>
+</body>
+</html>
